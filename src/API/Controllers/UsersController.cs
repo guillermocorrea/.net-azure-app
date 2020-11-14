@@ -27,7 +27,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> Get(int id)
+        public async Task<ActionResult<User>> Get(string id)
         {
             return Ok(await _userService.GetUserByIdAsync(id));
         }
@@ -40,14 +40,14 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] User user)
+        public async Task<ActionResult> Put(string id, [FromBody] User user)
         {
             var updatedUser = await _userService.UpdateUser(id, user);
             return Ok(updatedUser);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
             await _userService.DeleteUser(id);
             return Ok();

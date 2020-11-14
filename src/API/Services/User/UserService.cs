@@ -39,7 +39,7 @@ namespace API.Services.User
             return newUser;
         }
 
-        public async Task DeleteUser(int id)
+        public async Task DeleteUser(string id)
         {
             var user = await GetUserByIdAsync(id);
             _context.Remove(user);
@@ -51,7 +51,7 @@ namespace API.Services.User
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<Model.User> GetUserByIdAsync(int id)
+        public async Task<Model.User> GetUserByIdAsync(string id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
@@ -61,7 +61,7 @@ namespace API.Services.User
             return user;
         }
 
-        public async Task<Model.User> UpdateUser(int id, Model.User user)
+        public async Task<Model.User> UpdateUser(string id, Model.User user)
         {
             var dbUser = await GetUserByIdAsync(id);
             dbUser.FirstName = user.FirstName;

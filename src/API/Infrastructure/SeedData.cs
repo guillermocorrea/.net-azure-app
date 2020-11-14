@@ -19,7 +19,7 @@ namespace API.Infrastructure
             {
                 var user = new User
                 {
-                    Id = i,
+                    Id = i.ToString(),
                     FirstName = $"User {i}",
                     LastName = $"User Last Name {i}",
                     Email = "user@email"

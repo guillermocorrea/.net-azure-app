@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using API.Infrastructure;
 using API.Middlewares;
 using API.Services.User;
+using API.Services.User.MongoDB;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 namespace API
@@ -29,9 +33,14 @@ namespace API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MongoDbSettings>(Configuration.GetSection("MongoDBSettings"));
+            services.AddSingleton<IDatabaseSettings>(x => x.GetRequiredService<IOptions<MongoDbSettings>>().Value);
             services.AddDbContext<AppDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddTransient<IUserService, UserService>();
+            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddSingleton<IMongoClient>(new MongoClient(Configuration["MongoDBSettings:ConnectionString"]));
+            services.AddSingleton<IUserService, MongoDBUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
