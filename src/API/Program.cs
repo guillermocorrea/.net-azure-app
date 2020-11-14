@@ -19,26 +19,26 @@ namespace API
             var host = CreateHostBuilder(args)
             .ConfigureLogging(builder => builder.AddAzureWebAppDiagnostics())
             .Build();
-#if DEBUG
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("Seeding data...");
-                try
-                {
-                    var context = services.GetRequiredService<AppDbContext>();
-                    context.Database.Migrate();
-                    logger.LogInformation("Migration applied...");
-                    SeedData.Seed(context).Wait();
-                    logger.LogInformation("Seeding completed!!!");
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "An error occured during migration");
-                }
-            }
-#endif
+            // #if DEBUG
+            //             using (var scope = host.Services.CreateScope())
+            //             {
+            //                 var services = scope.ServiceProvider;
+            //                 var logger = services.GetRequiredService<ILogger<Program>>();
+            //                 logger.LogInformation("Seeding data...");
+            //                 try
+            //                 {
+            //                     var context = services.GetRequiredService<AppDbContext>();
+            //                     context.Database.Migrate();
+            //                     logger.LogInformation("Migration applied...");
+            //                     SeedData.Seed(context).Wait();
+            //                     logger.LogInformation("Seeding completed!!!");
+            //                 }
+            //                 catch (Exception ex)
+            //                 {
+            //                     logger.LogError(ex, "An error occured during migration");
+            //                 }
+            //             }
+            // #endif
             host.Run();
         }
 
